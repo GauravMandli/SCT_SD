@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sudoku Solver</title>
+    <style>
+        /* Simple reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            padding: 20px;
+        }
+
+        .main-container {
+            max-width: 500px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        .instructions {
+            text-align: center;
+            color: #666;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        /* Simple table styling */
+        .sudoku-table {
+            border-collapse: collapse;
+            margin: 20px auto;
+            background-color: white;
+        }
+
+        .sudoku-table td {
+            border: 1px solid #ccc;
+            width: 40px;
+            height: 40px;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        /* Bold borders for 3x3 boxes */
+        .sudoku-table td:nth-child(3n) {
+            border-right: 2px solid #333;
+        }
+
+        .sudoku-table tr:nth-child(3n) td {
+            border-bottom: 2px solid #333;
+        }
+
+        /* Input styling */
+        .sudoku-table input {
+            width: 100%;
+            height: 100%;
+            border: none;
+            text-align: center;
+            font-size: 16px;
+            font-weight: bold;
+            background-color: transparent;
+            outline: none;
+        }
+
+        .sudoku-table input:focus {
+            background-color: #e6f3ff;
+        }
+
+        /* Button styling */
+        .solve-button {
+            display: block;
+            width: 150px;
+            margin: 20px auto;
+            padding: 12px 24px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .solve-button:hover {
+            background-color: #45a049;
+        }
+
+        /* Result section */
+        .result-section {
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .result-section h3 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .solved-table {
+            border-collapse: collapse;
+            margin: 20px auto;
+            background-color: #e8f5e8;
+        }
+
+        .solved-table td {
+            border: 1px solid #ccc;
+            width: 40px;
+            height: 40px;
+            text-align: center;
+            vertical-align: middle;
+            font-weight: bold;
+            color: #2e7d32;
+            background-color: #e8f5e8;
+        }
+
+        .solved-table td:nth-child(3n) {
+            border-right: 2px solid #333;
+        }
+
+        .solved-table tr:nth-child(3n) td {
+            border-bottom: 2px solid #333;
+        }
+
+        /* Error message */
+        .error-message {
+            color: #d32f2f;
+            text-align: center;
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #ffebee;
+            border-radius: 5px;
+            border-left: 4px solid #d32f2f;
+            font-weight: bold;
+        }
+
+        /* Simple responsive design */
+        @media (max-width: 600px) {
+            .main-container {
+                padding: 20px;
+            }
+            
+            .sudoku-table td,
+            .solved-table td {
+                width: 35px;
+                height: 35px;
+            }
+            
+            .sudoku-table input {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <h1>Sudoku Solver</h1>
+        
+        <div class="instructions">
+            Enter numbers in the grid below and click "Solve" to find the solution
+        </div>
+
+        <form method="POST">
+            <table class="sudoku-table">
+                {% for i in range(9) %}
+                <tr>
+                    {% for j in range(9) %}
+                    <td>
+                        <input type="number" name="cell_{{ i }}_{{ j }}" min="1" max="9"
+                               value="{{ board[i][j] if board[i][j] != 0 else '' }}">
+                    </td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </table>
+            
+            <button type="submit" class="solve-button">Solve Sudoku</button>
+        </form>
+
+        {% if result and result != 'No solution found.' %}
+            <div class="result-section">
+                <h3>Solved Sudoku:</h3>
+                <table class="solved-table">
+                    {% for row in result %}
+                    <tr>
+                        {% for num in row %}
+                        <td>{{ num }}</td>
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        {% elif result == 'No solution found.' %}
+            <div class="error-message">
+                No solution found for this Sudoku puzzle.
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>
