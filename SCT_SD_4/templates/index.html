@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Scraper</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f2f2f2;
+        color: #000; /* Make all text black */
+        padding: 20px;
+    }
+
+    h1 {
+        color: #2c3e50;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+        background-color: white;
+        color: #000; /* Text inside table will be black */
+    }
+
+    th, td {
+        border: 1px solid #ccc;
+        padding: 10px;
+        text-align: left;
+    }
+
+    th {
+        background-color: #e0e0e0;
+        font-weight: bold;
+    }
+
+    input[type="text"], button {
+        padding: 10px;
+        width: 100%;
+        margin-top: 10px;
+        font-size: 16px;
+    }
+
+    button {
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background-color: #45a049;
+    }
+</style>
+</head>
+<body>
+       <h2>🔍 E-commerce Product Scraper</h2>
+    <form method="POST">
+        <input type="text" name="url" placeholder="Enter website URL to scrape" required>
+        <button type="submit">Scrape Products</button>
+    </form>
+
+    {% if products %}
+    <h3>Scraped Products:</h3>
+    <table>
+        <tr><th>Name</th><th>Price</th><th>Rating</th></tr>
+        {% for p in products %}
+        <tr>
+            <td>{{ p[0] }}</td>
+            <td>{{ p[1] }}</td>
+            <td>{{ p[2] }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% endif %}
+</body>
+</html>
